@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maqueta - Punto de Venta</title>
-      <link rel="stylesheet" href="/style.css">
+      <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 
     <!-- app-layout: Divide la pantalla entre el menú lateral y el contenido principal -->
     <div class="app-layout">
-        <?php include 'navbar.php'; ?>
+        <?php include '../navbar.php'; ?>
 
         
         <!-- main-content: Área donde se despliega el módulo actual -->

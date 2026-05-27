@@ -4,21 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maqueta - Reportes</title>
-      <link rel="stylesheet" href="/style.css">
+      <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 
     <div class="app-layout">
         
-        <nav style="width: 260px; background-color: #1e293b; padding: 20px; display: flex; flex-direction: column; gap: 10px; border-right: 1px solid var(--border-color); min-height: 100vh;">
-            <h2 style="color: #38bdf8; text-align: center; margin-bottom: 20px;">🏪 Mi POS</h2>
-            <a href="pos.html" class="btn btn-secondary" style="text-decoration: none; text-align: left; color: white;">🛒 Punto de Venta</a>
-            <a href="inventarios.html" class="btn btn-secondary" style="text-decoration: none; text-align: left; color: white;">📦 Inventarios</a>
-            <a href="articulos.html" class="btn btn-secondary" style="text-decoration: none; text-align: left; color: white;">🏷️ Artículos</a>
-            <a href="clientes.html" class="btn btn-secondary" style="text-decoration: none; text-align: left; color: white;">👥 Clientes</a>
-            <a href="reportes.html" class="btn btn-primary" style="text-decoration: none; text-align: left; color: white;">📊 Reportes</a>
-            <a href="login.html" class="btn btn-danger" style="text-decoration: none; text-align: center; margin-top: auto;">Cerrar Sesión</a>
-        </nav>
+         <?php include '../navbar.php'; ?>
 
         
         <main class="main-content">

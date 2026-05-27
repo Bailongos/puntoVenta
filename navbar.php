@@ -1,7 +1,7 @@
 <?php
 // navbar.php
 // Este archivo es el componente de navegación lateral reutilizable.
-
+$url_base = '/punto-de-venta-ruben';
 // Recibimos la variable desde la página que lo invoca, si no existe, la dejamos vacía
 $activo = isset($modulo_activo) ? $modulo_activo : '';
 ?>
@@ -10,31 +10,31 @@ $activo = isset($modulo_activo) ? $modulo_activo : '';
     
     <h2 style="color: #38bdf8; text-align: center; margin-bottom: 20px;">🏪 Mi POS</h2>
     
-    <a href="pos.php" 
+   <a href="<?php echo $url_base; ?>/Punto_De_Venta/PuntoDeVenta.php"
        class="btn <?php echo ($activo == 'pos') ? 'btn-primary' : ''; ?>" 
        style="text-decoration: none; text-align: left; color: white;">
        🛒 Punto de Venta
     </a>
     
-    <a href="inventarios.php" 
+     <a href="<?php echo $url_base; ?>/inventarios/inventarios.php"
        class="btn <?php echo ($activo == 'inventarios') ? 'btn-primary' : ''; ?>" 
        style="text-decoration: none; text-align: left; color: white;">
        📦 Inventarios
     </a>
     
-    <a href="articulos.php" 
+   <a href="<?php echo $url_base; ?>/Articulos/articulos.php"
        class="btn <?php echo ($activo == 'articulos') ? 'btn-primary' : ''; ?>" 
        style="text-decoration: none; text-align: left; color: white;">
        🏷️ Artículos (ABC)
     </a>
     
-    <a href="clientes.php" 
+     <a href="<?php echo $url_base; ?>/Clientes/clientes.php"
        class="btn <?php echo ($activo == 'clientes') ? 'btn-primary' : ''; ?>" 
        style="text-decoration: none; text-align: left; color: white;">
        👥 Clientes (ABC)
     </a>
     
-    <a href="reportes.php" 
+     <a href="<?php echo $url_base; ?>/Reportes/reportes.php"
        class="btn <?php echo ($activo == 'reportes') ? 'btn-primary' : ''; ?>" 
        style="text-decoration: none; text-align: left; color: white;">
        📊 Reportes
