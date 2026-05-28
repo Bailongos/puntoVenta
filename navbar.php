@@ -7,6 +7,8 @@ if (!isset($_SESSION['usuario'])) {
     exit;
 }
 
+require_once __DIR__ . '/funciones.php';
+
 $script_path = trim($_SERVER['SCRIPT_NAME'], '/');
 $project_folder = explode('/', $script_path)[0];
 $url_base = '/' . $project_folder;
@@ -14,7 +16,7 @@ $url_base = '/' . $project_folder;
 $activo = isset($modulo_activo) ? $modulo_activo : '';
 
 $usuario_nombre = $_SESSION['nombre_completo'] ?? 'Usuario';
-$usuario_rol = $_SESSION['rol'] ?? '';
+$usuario_rol = $_SESSION['rol_nombre'] ?? $_SESSION['rol'] ?? '';
 $usuario_iniciales = strtoupper(substr($usuario_nombre, 0, 2));
 
 $menu_items = [
@@ -22,37 +24,43 @@ $menu_items = [
         'id' => 'inicio',
         'label' => 'Inicio',
         'icon' => 'home',
-        'url' => $url_base . '/menu.php'
+        'url' => $url_base . '/menu.php',
+        'permiso' => 'ver_inicio'
     ],
     [
         'id' => 'pos',
         'label' => 'Punto de Venta',
         'icon' => 'point_of_sale',
-        'url' => $url_base . '/Punto_De_Venta/PuntoDeVenta.php'
+        'url' => $url_base . '/Punto_De_Venta/PuntoDeVenta.php',
+        'permiso' => 'ver_punto_venta'
     ],
     [
         'id' => 'clientes',
         'label' => 'Clientes',
         'icon' => 'group',
-        'url' => $url_base . '/Clientes/clientes.php'
+        'url' => $url_base . '/Clientes/clientes.php',
+        'permiso' => 'ver_clientes'
     ],
     [
         'id' => 'articulos',
         'label' => 'Artículos',
         'icon' => 'sell',
-        'url' => $url_base . '/Articulos/articulos.php'
+        'url' => $url_base . '/Articulos/articulos.php',
+        'permiso' => 'ver_articulos'
     ],
     [
         'id' => 'inventarios',
         'label' => 'Inventario',
         'icon' => 'inventory_2',
-        'url' => $url_base . '/Inventarios/inventarios.php'
+        'url' => $url_base . '/Inventarios/inventarios.php',
+        'permiso' => 'ver_inventario'
     ],
     [
         'id' => 'reportes',
         'label' => 'Reportes',
         'icon' => 'bar_chart',
-        'url' => $url_base . '/Reportes/reportes.php'
+        'url' => $url_base . '/Reportes/reportes.php',
+        'permiso' => 'ver_reportes'
     ],
 ];
 
@@ -61,19 +69,22 @@ $admin_items = [
     'id' => 'usuarios',
     'label' => 'Usuarios',
     'icon' => 'manage_accounts',
-    'url' => $url_base . '/Usuarios/usuarios.php'
+    'url' => $url_base . '/Usuarios/usuarios.php',
+    'permiso' => 'ver_usuarios'
     ],
     [
         'id' => 'roles',
         'label' => 'Roles',
         'icon' => 'verified_user',
-        'url' => '#'
+        'url' => $url_base . '/Usuarios/roles.php',
+        'permiso' => 'ver_roles'
     ],
     [
         'id' => 'permisos',
         'label' => 'Permisos',
         'icon' => 'lock',
-        'url' => '#'
+        'url' => $url_base . '/Usuarios/permisos.php',
+        'permiso' => 'ver_permisos'
     ],
 ];
 ?>
@@ -89,20 +100,8 @@ $admin_items = [
     </div>
 
     <nav class="sidebar-nav">
-        <?php foreach ($menu_items as $item): ?>
-            <a
-                href="<?php echo $item['url']; ?>"
-                class="sidebar-link <?php echo ($activo === $item['id']) ? 'active' : ''; ?>"
-            >
-                <span class="sidebar-icon"><span class="material-icons"><?php echo $item['icon']; ?></span></span>
-                <span><?php echo $item['label']; ?></span>
-            </a>
-        <?php endforeach; ?>
-
-        <div class="sidebar-section-title">Administración</div>
-
-        <?php foreach ($admin_items as $item):
-            $is_placeholder = ($item['url'] === '#');
+        <?php foreach ($menu_items as $item):
+            if (!tiene_permiso($item['permiso'])) continue;
         ?>
             <a
                 href="<?php echo $item['url']; ?>"
@@ -110,12 +109,30 @@ $admin_items = [
             >
                 <span class="sidebar-icon"><span class="material-icons"><?php echo $item['icon']; ?></span></span>
                 <span><?php echo $item['label']; ?></span>
-                <?php if ($is_placeholder): ?>
-                    <span class="coming-soon">Próximo</span>
-                <?php endif; ?>
             </a>
         <?php endforeach; ?>
 
+        <?php $has_admin = false;
+        foreach ($admin_items as $item):
+            if (tiene_permiso($item['permiso'])) { $has_admin = true; break; }
+        endforeach;
+        if ($has_admin): ?>
+        <div class="sidebar-section-title">Administración</div>
+        <?php endif; ?>
+
+        <?php foreach ($admin_items as $item):
+            if (!tiene_permiso($item['permiso'])) continue;
+        ?>
+            <a
+                href="<?php echo $item['url']; ?>"
+                class="sidebar-link <?php echo ($activo === $item['id']) ? 'active' : ''; ?>"
+            >
+                <span class="sidebar-icon"><span class="material-icons"><?php echo $item['icon']; ?></span></span>
+                <span><?php echo $item['label']; ?></span>
+            </a>
+        <?php endforeach; ?>
+
+        <?php if (tiene_permiso('ver_corte_caja')): ?>
         <div class="sidebar-section-title">Operación</div>
 
         <a href="#" class="sidebar-link <?php echo ($activo === 'corte_caja') ? 'active' : ''; ?>">
@@ -123,6 +140,7 @@ $admin_items = [
             <span>Corte de Caja</span>
             <span class="coming-soon">Próximo</span>
         </a>
+        <?php endif; ?>
     </nav>
 
     <div class="sidebar-store-card">
