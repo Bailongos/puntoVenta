@@ -17,17 +17,12 @@
     if (existing) existing.remove();
 
     const toast = document.createElement('div');
-    toast.className = 'toast-notification';
-    toast.style.cssText =
-      'position:fixed;bottom:24px;right:24px;padding:14px 22px;border-radius:14px;color:#fff;font-weight:700;font-size:14px;z-index:9999;box-shadow:0 12px 30px rgba(0,0,0,0.18);max-width:360px;';
-    toast.style.background =
-      type === 'success' ? '#22c55e' : type === 'error' ? '#ef4444' : '#3b82f6';
+    toast.className = 'toast-notification ' + (type || 'info');
     toast.textContent = message;
     document.body.appendChild(toast);
 
     setTimeout(function () {
       toast.style.opacity = '0';
-      toast.style.transition = 'opacity 0.3s ease';
       setTimeout(function () { toast.remove(); }, 300);
     }, 3000);
   }
@@ -57,7 +52,7 @@
 
     if (ticketItems.length === 0) {
       ticketBody.innerHTML =
-        '<tr><td colspan="3" class="empty-state" style="text-align:center;padding:24px;color:#94a3b8;">Agrega productos al ticket</td></tr>';
+        '<tr><td colspan="3" class="empty-state">Agrega productos al ticket</td></tr>';
       if (ticketTotal) ticketTotal.textContent = '$0.00';
       if (ticketCount) ticketCount.textContent = '0';
       return;
@@ -69,15 +64,15 @@
       total += subtotal;
       const row = document.createElement('tr');
       row.innerHTML =
-        '<td style="padding:6px 0;">' +
+        '<td>' +
         item.cantidad +
         ' x ' +
         item.nombre +
-        '</td><td style="text-align:right;padding:6px 0;">$' +
+        '</td><td class="text-right">$' +
         subtotal.toFixed(2) +
-        '</td><td style="text-align:right;padding:6px 0;width:30px;"><button class="btn-remove-item" data-index="' +
+        '</td><td class="td-actions"><button class="btn-remove-item" data-index="' +
         index +
-        '" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:16px;">×</button></td>';
+        '">×</button></td>';
       ticketBody.appendChild(row);
     });
 
@@ -92,24 +87,32 @@
     });
   }
 
+  function agregarAlTicket(nombre, precio) {
+    const found = ticketItems.filter(function (i) { return i.nombre === nombre; });
+    if (found.length > 0) {
+      found[0].cantidad += 1;
+    } else {
+      ticketItems.push({ nombre: nombre, precio: precio, cantidad: 1 });
+    }
+    actualizarTicket();
+    showToast(nombre + ' agregado al ticket', 'success');
+  }
+
   productCards.forEach(function (card) {
     const btn = card.querySelector('.btn-success');
     const nombreEl = card.querySelector('h4');
     const precioEl = card.querySelector('p');
     if (!btn || !nombreEl || !precioEl) return;
 
+    const nombre = nombreEl.textContent;
+    const precio = parseFloat(precioEl.textContent.replace('$', '')) || 0;
+
+    card.addEventListener('click', function () {
+      agregarAlTicket(nombre, precio);
+    });
+
     btn.addEventListener('click', function (e) {
       e.stopPropagation();
-      const nombre = nombreEl.textContent;
-      const precio = parseFloat(precioEl.textContent.replace('$', '')) || 0;
-      const found = ticketItems.filter(function (i) { return i.nombre === nombre; });
-      if (found.length > 0) {
-        found[0].cantidad += 1;
-      } else {
-        ticketItems.push({ nombre: nombre, precio: precio, cantidad: 1 });
-      }
-      actualizarTicket();
-      showToast(nombre + ' agregado al ticket', 'success');
     });
   });
 
@@ -138,7 +141,9 @@
   }
 
   document.querySelectorAll('form').forEach(function (form) {
-    if (form.closest('.login-panel') || (form.action && form.action.indexOf('login.php') > -1)) return;
+    if (form.closest('.login-panel')) return;
+    if (form.action && form.action.indexOf('login.php') > -1) return;
+    if (form.getAttribute('method') && form.getAttribute('method').toUpperCase() === 'POST') return;
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       showToast('Datos guardados correctamente', 'success');
@@ -147,6 +152,7 @@
 
   document.querySelectorAll('.btn-danger').forEach(function (btn) {
     if (btn.closest('.pos-ticket-sidebar') || btn.textContent.indexOf('Dar de Baja') === -1) return;
+    if (btn.tagName === 'A') return;
     btn.addEventListener('click', function () {
       var row = this.closest('tr');
       if (row) { row.style.opacity = '0.4'; }
@@ -156,6 +162,7 @@
 
   document.querySelectorAll('.btn-success').forEach(function (btn) {
     if (btn.textContent.indexOf('Reactivar') > -1) {
+      if (btn.tagName === 'A') return;
       btn.addEventListener('click', function () {
         var row = this.closest('tr');
         if (row) { row.style.opacity = '1'; }
