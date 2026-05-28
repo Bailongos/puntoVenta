@@ -41,7 +41,7 @@
   document.querySelectorAll('form').forEach(function (form) {
     if (form.closest('.login-panel')) return;
     if (form.action && form.action.indexOf('login.php') > -1) return;
-    if (form.getAttribute('method') && form.getAttribute('method').toUpperCase() === 'POST') return;
+    if (form.getAttribute('method')) return;
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       showToast('Datos guardados correctamente', 'success');
