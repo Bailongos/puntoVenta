@@ -46,10 +46,10 @@ $menu_items = [
 
 $admin_items = [
     [
-        'id' => 'usuarios',
-        'label' => 'Usuarios',
-        'icon' => '👤',
-        'url' => '#'
+    'id' => 'usuarios',
+    'label' => 'Usuarios',
+    'icon' => '👤',
+    'url' => $url_base . '/Usuarios/usuarios.php'
     ],
     [
         'id' => 'roles',
