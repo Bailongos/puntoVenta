@@ -1,0 +1,232 @@
+.users-summary-grid {
+    margin-bottom: 22px;
+}
+
+.users-grid {
+    display: grid;
+    grid-template-columns: 1.45fr 0.9fr;
+    gap: 22px;
+    margin-bottom: 22px;
+}
+
+.users-table-card,
+.user-form-card,
+.roles-card {
+    min-width: 0;
+}
+
+.table-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.table-tools select,
+.user-form input,
+.user-form select {
+    height: 42px;
+    border: 1px solid var(--dash-border);
+    border-radius: 13px;
+    background: #ffffff;
+    color: var(--dash-text);
+    padding: 0 14px;
+    outline: none;
+    font-size: 14px;
+}
+
+.table-tools select:focus,
+.user-form input:focus,
+.user-form select:focus {
+    border-color: var(--dash-primary);
+    box-shadow: 0 0 0 4px rgba(47, 125, 107, 0.12);
+}
+
+.users-table-wrapper,
+.roles-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.users-table,
+.roles-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.users-table th,
+.users-table td,
+.roles-table th,
+.roles-table td {
+    padding: 15px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--dash-border);
+    font-size: 14px;
+}
+
+.users-table th,
+.roles-table th {
+    color: #475569;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.users-table td:last-child,
+.roles-table td:not(:first-child) {
+    text-align: center;
+}
+
+.roles-table td:not(:first-child) {
+    font-weight: 900;
+    color: var(--dash-primary-dark);
+}
+
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-mini-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: var(--dash-primary-soft);
+    color: var(--dash-primary-dark);
+    font-weight: 900;
+}
+
+.user-cell strong,
+.user-cell span {
+    display: block;
+}
+
+.user-cell span {
+    margin-top: 3px;
+    color: var(--dash-muted);
+    font-size: 12px;
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.status-pill.active {
+    background: var(--dash-primary-soft);
+    color: var(--dash-primary-dark);
+}
+
+.status-pill.inactive {
+    background: #fff1f2;
+    color: #be123c;
+}
+
+/* Formulario */
+
+.user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-row label {
+    color: #374151;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.permissions-preview {
+    margin-top: 4px;
+    padding: 16px;
+    border: 1px solid var(--dash-border);
+    border-radius: 18px;
+    background: #f8fafc;
+}
+
+.permissions-preview h4 {
+    margin: 0 0 12px;
+    font-size: 14px;
+}
+
+.permission-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.permission-list span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: var(--dash-primary-soft);
+    color: var(--dash-primary-dark);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.form-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.secondary-button,
+.save-button {
+    height: 44px;
+    border: none;
+    border-radius: 14px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.secondary-button {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.save-button {
+    background: linear-gradient(135deg, var(--dash-primary), var(--dash-primary-dark));
+    color: #ffffff;
+    box-shadow: 0 12px 24px rgba(47, 125, 107, 0.2);
+}
+
+/* Responsive */
+
+@media (max-width: 1180px) {
+    .users-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    .table-tools {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .panel-header {
+        flex-direction: column;
+    }
+
+    .form-actions {
+        grid-template-columns: 1fr;
+    }
+}
