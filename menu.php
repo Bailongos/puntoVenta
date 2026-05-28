@@ -13,8 +13,8 @@ require 'dashboard-header.php';
         <p>Resumen general del punto de venta y accesos rápidos del sistema.</p>
     </div>
 
-    <a href="Punto_De_Venta/PuntoDeVenta.php" class="primary-action">
-        + Nueva venta
+    <a href="Punto_De_Venta/PuntoDeVenta.php" class="btn btn-primary" style="min-height: 42px;">
+        <span class="material-icons">add</span> Nueva venta
     </a>
 </div>
 
@@ -25,7 +25,7 @@ require 'dashboard-header.php';
             <h2>$ 0.00</h2>
             <span class="neutral">Sin ventas registradas</span>
         </div>
-        <div class="summary-icon green">💵</div>
+        <div class="summary-icon green"><span class="material-icons">payments</span></div>
     </article>
 
     <article class="summary-card">
@@ -34,7 +34,7 @@ require 'dashboard-header.php';
             <h2>0</h2>
             <span class="neutral">Sin tickets registrados</span>
         </div>
-        <div class="summary-icon blue">🧾</div>
+        <div class="summary-icon blue"><span class="material-icons">receipt_long</span></div>
     </article>
 
     <article class="summary-card">
@@ -43,7 +43,7 @@ require 'dashboard-header.php';
             <h2>0</h2>
             <span class="neutral">Sin alertas de stock</span>
         </div>
-        <div class="summary-icon orange">📦</div>
+        <div class="summary-icon orange"><span class="material-icons">inventory</span></div>
     </article>
 
     <article class="summary-card">
@@ -52,7 +52,7 @@ require 'dashboard-header.php';
             <h2>$ 0.00</h2>
             <span class="neutral">Caja sin apertura</span>
         </div>
-        <div class="summary-icon green">🧮</div>
+        <div class="summary-icon green"><span class="material-icons">point_of_sale</span></div>
     </article>
 </section>
 
@@ -87,7 +87,7 @@ require 'dashboard-header.php';
 
         <div class="action-list">
             <a href="Punto_De_Venta/PuntoDeVenta.php">
-                <span>🛒</span>
+                <span><span class="material-icons">shopping_cart</span></span>
                 <div>
                     <strong>Nueva venta</strong>
                     <small>Iniciar ticket de venta</small>
@@ -96,7 +96,7 @@ require 'dashboard-header.php';
             </a>
 
             <a href="Clientes/clientes.php">
-                <span>👥</span>
+                <span><span class="material-icons">person_add</span></span>
                 <div>
                     <strong>Nuevo cliente</strong>
                     <small>Registrar cliente</small>
@@ -105,7 +105,7 @@ require 'dashboard-header.php';
             </a>
 
             <a href="Articulos/articulos.php">
-                <span>🏷️</span>
+                <span><span class="material-icons">search</span></span>
                 <div>
                     <strong>Buscar artículo</strong>
                     <small>Consultar precio y stock</small>
@@ -114,7 +114,7 @@ require 'dashboard-header.php';
             </a>
 
             <a href="#">
-                <span>🧮</span>
+                <span><span class="material-icons">calculate</span></span>
                 <div>
                     <strong>Corte de caja</strong>
                     <small>Cerrar caja y revisar ventas</small>

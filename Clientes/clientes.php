@@ -17,7 +17,7 @@ require '../dashboard-header.php';
 <div class="module-card">
     <h3>Formulario de Registro</h3>
     <br>
-    <form style="display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap;">
+    <form class="flex-row" style="align-items: flex-end;">
         <div class="form-group" style="flex: 2; min-width: 250px;">
             <label>Nombre del Cliente:</label>
             <input type="text" class="form-control" placeholder="Nombre completo o Razón Social">
@@ -26,7 +26,7 @@ require '../dashboard-header.php';
             <label>Teléfono de Contacto:</label>
             <input type="text" class="form-control" placeholder="Ej. 8717000000">
         </div>
-        <button type="button" class="btn btn-primary" style="margin-bottom: 15px; height: 42px;">Registrar Cliente</button>
+        <button type="button" class="btn btn-primary"><span class="material-icons">person_add</span> Registrar Cliente</button>
     </form>
 </div>
 
@@ -49,8 +49,8 @@ require '../dashboard-header.php';
                 <td>8711234567</td>
                 <td><span class="badge badge-active">Activo</span></td>
                 <td>
-                    <button class="btn" style="background: #e2e8f0; color: var(--dash-text); padding: 4px 8px; font-size: 0.8em;">Editar</button>
-                    <button class="btn btn-danger" style="padding: 4px 8px; font-size: 0.8em;">Dar de Baja</button>
+                    <button class="btn btn-secondary btn-sm">Editar</button>
+                    <button class="btn btn-danger btn-sm">Dar de Baja</button>
                 </td>
             </tr>
             <tr>
@@ -59,7 +59,7 @@ require '../dashboard-header.php';
                 <td>8719876543</td>
                 <td><span class="badge badge-inactive">Inactivo</span></td>
                 <td>
-                    <button class="btn btn-success" style="padding: 4px 8px; font-size: 0.8em;">Reactivar</button>
+                    <button class="btn btn-success btn-sm">Reactivar</button>
                 </td>
             </tr>
         </tbody>

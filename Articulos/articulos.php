@@ -14,62 +14,58 @@ require '../dashboard-header.php';
     </div>
 </div>
 
-<div style="display: flex; gap: 20px; flex-wrap: wrap;">
+<div class="module-card">
+    <h3>Registrar / Modificar Artículo</h3>
+    <br>
+    <form class="flex-row" style="align-items: flex-end;">
+        <div class="form-group" style="flex: 2; min-width: 200px;">
+            <label>Código de Barras:</label>
+            <input type="text" class="form-control" placeholder="Ej. 750123456789">
+        </div>
+        <div class="form-group" style="flex: 2; min-width: 250px;">
+            <label>Descripción / Nombre:</label>
+            <input type="text" class="form-control" placeholder="Ej. Detergente Líquido 1L">
+        </div>
+        <div class="form-group" style="flex: 1; min-width: 180px;">
+            <label>Subir Imagen:</label>
+            <input type="file" class="form-control">
+        </div>
+        <div class="flex-row" style="margin-bottom:15px;">
+            <button type="submit" class="btn btn-primary"><span class="material-icons">save</span> Guardar</button>
+            <button type="reset" class="btn btn-secondary"><span class="material-icons">clear</span> Limpiar</button>
+        </div>
+    </form>
+</div>
 
-    <div class="module-card" style="flex: 1; min-width: 300px;">
-        <h3>Registrar / Modificar Artículo</h3>
-        <br>
-        <form>
-            <div class="form-group">
-                <label>Código de Barras:</label>
-                <input type="text" class="form-control" placeholder="Ej. 750123456789">
-            </div>
-            <div class="form-group">
-                <label>Descripción / Nombre:</label>
-                <input type="text" class="form-control" placeholder="Ej. Detergente Líquido 1L">
-            </div>
-            <div class="form-group">
-                <label>Subir Imagen de Producto:</label>
-                <input type="file" class="form-control">
-            </div>
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button type="button" class="btn btn-primary">Guardar</button>
-                <button type="reset" class="btn" style="background: #94a3b8; color: white;">Limpiar</button>
-            </div>
-        </form>
-    </div>
-
-    <div class="module-card" style="flex: 2; min-width: 400px;">
-        <h3>Listado General de Artículos</h3>
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Imagen de muestra</th>
-                    <th>Descripción</th>
-                    <th>Estatus</th>
-                    <th>Acción (Baja Lógica)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>123456789</td>
-                    <td><div style="width: 40px; height: 40px; background: #e2e8f0; border-radius: 4px;"></div></td>
-                    <td>Producto Activo Ejemplo</td>
-                    <td><span class="badge badge-active">Alta</span></td>
-                    <td><button class="btn btn-danger" style="padding: 4px 8px; font-size: 0.8em;">Dar de Baja</button></td>
-                </tr>
-                <tr>
-                    <td>987654321</td>
-                    <td><div style="width: 40px; height: 40px; background: #e2e8f0; border-radius: 4px;"></div></td>
-                    <td>Producto Desactivado Ejemplo</td>
-                    <td><span class="badge badge-inactive">Baja</span></td>
-                    <td><button class="btn btn-success" style="padding: 4px 8px; font-size: 0.8em;">Reactivar</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
+<div class="module-card">
+    <h3>Listado General de Artículos</h3>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Imagen</th>
+                <th>Descripción</th>
+                <th>Estatus</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>123456789</td>
+                <td><div class="product-img-placeholder" style="width:44px;height:44px;"><span class="material-icons" style="font-size:18px;">image</span></div></td>
+                <td>Producto Activo Ejemplo</td>
+                <td><span class="badge badge-active">Alta</span></td>
+                <td><button class="btn btn-danger btn-sm">Dar de Baja</button></td>
+            </tr>
+            <tr>
+                <td>987654321</td>
+                <td><div class="product-img-placeholder" style="width:44px;height:44px;"><span class="material-icons" style="font-size:18px;">image</span></div></td>
+                <td>Producto Desactivado Ejemplo</td>
+                <td><span class="badge badge-inactive">Baja</span></td>
+                <td><button class="btn btn-success btn-sm">Reactivar</button></td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 <?php require '../dashboard-footer.php'; ?>

@@ -3,6 +3,7 @@ $modulo_activo = 'pos';
 $page_title = 'Punto de Venta';
 $page_search = 'Buscar productos...';
 $root_path = '../';
+$body_class = 'pos-mode';
 require '../dashboard-header.php';
 ?>
 
@@ -19,51 +20,79 @@ require '../dashboard-header.php';
     <div class="pos-products-grid">
 
         <div class="product-card">
-            <div style="background: #e2e8f0; height: 100px; border-radius: 4px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.9em; color: #64748b;">📸 Imagen</div>
-            <h4>Producto de Muestra A</h4>
-            <p style="font-weight: bold; color: var(--dash-primary); margin: 5px 0;">$25.00</p>
-            <button class="btn btn-success" style="padding: 5px 10px; font-size: 0.85em; width: 100%;">+ Agregar</button>
+            <div class="product-img-placeholder"><span class="material-icons">shopping_bag</span></div>
+            <h4>Coca-Cola 600ml</h4>
+            <p>$18.00</p>
+            <button class="btn btn-success btn-block">+ Agregar</button>
         </div>
 
         <div class="product-card">
-            <div style="background: #e2e8f0; height: 100px; border-radius: 4px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.9em; color: #64748b;">📸 Imagen</div>
-            <h4>Producto de Muestra B</h4>
-            <p style="font-weight: bold; color: var(--dash-primary); margin: 5px 0;">$14.50</p>
-            <button class="btn btn-success" style="padding: 5px 10px; font-size: 0.85em; width: 100%;">+ Agregar</button>
+            <div class="product-img-placeholder"><span class="material-icons">bakery_dining</span></div>
+            <h4>Pan Blanco Bimbo</h4>
+            <p>$32.50</p>
+            <button class="btn btn-success btn-block">+ Agregar</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-img-placeholder"><span class="material-icons">water_drop</span></div>
+            <h4>Agua Natural 1L</h4>
+            <p>$14.00</p>
+            <button class="btn btn-success btn-block">+ Agregar</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-img-placeholder"><span class="material-icons">egg</span></div>
+            <h4>Huevo Blanco 12pz</h4>
+            <p>$38.00</p>
+            <button class="btn btn-success btn-block">+ Agregar</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-img-placeholder"><span class="material-icons">local_pizza</span></div>
+            <h4>Pizza Congelada</h4>
+            <p>$89.00</p>
+            <button class="btn btn-success btn-block">+ Agregar</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-img-placeholder"><span class="material-icons">coffee</span></div>
+            <h4>Café Molido 250g</h4>
+            <p>$55.00</p>
+            <button class="btn btn-success btn-block">+ Agregar</button>
         </div>
 
     </div>
 
     <div class="pos-ticket-sidebar">
-        <h3>🧾 Ticket Actual</h3>
-        <p style="font-size: 0.85em; color: var(--dash-muted);">Cliente: Público General</p>
+        <h3><span class="material-icons">receipt</span> Ticket Actual</h3>
+        <p class="ticket-meta">Cliente: Público General</p>
 
         <div class="ticket-items">
-            <table style="width: 100%; margin-top: 10px; font-size: 0.9em; border-collapse: collapse;">
+            <table class="ticket-table">
                 <thead>
-                    <tr style="border-bottom: 1px dashed var(--dash-border);">
-                        <th style="text-align:left;padding:6px 0;">Artículo</th>
-                        <th style="text-align:right;padding:6px 0;">Subtotal</th>
-                        <th style="width:30px;"></th>
+                    <tr>
+                        <th>Artículo</th>
+                        <th class="text-right">Subtotal</th>
+                        <th class="td-actions"></th>
                     </tr>
                 </thead>
                 <tbody id="ticket-body">
                     <tr>
-                        <td colspan="3" class="empty-state" style="text-align:center;padding:24px;color:#94a3b8;">Agrega productos al ticket</td>
+                        <td colspan="3" class="empty-state">Agrega productos al ticket</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-            <span style="color:var(--dash-muted);font-size:0.9em;">Artículos: <strong id="ticket-count">0</strong></span>
-            <div class="ticket-total" id="ticket-total" style="margin:0;">$0.00</div>
+        <div class="ticket-summary">
+            <span class="ticket-count">Artículos: <strong id="ticket-count">0</strong></span>
+            <div class="ticket-total" id="ticket-total">$0.00</div>
         </div>
 
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-            <button class="btn btn-success" id="cobrar-btn">💵 Cobrar Venta</button>
-            <button class="btn btn-primary" style="background-color: #0284c7;">✂️ Realizar Corte de Caja</button>
-            <button class="btn btn-danger" id="cancelar-btn">🚫 Cancelar</button>
+        <div class="ticket-actions">
+            <button class="btn btn-success" id="cobrar-btn"><span class="material-icons">payments</span> Cobrar Venta</button>
+            <button class="btn btn-info" id="corte-btn"><span class="material-icons">content_cut</span> Corte de Caja</button>
+            <button class="btn btn-danger" id="cancelar-btn"><span class="material-icons">cancel</span> Cancelar</button>
         </div>
     </div>
 

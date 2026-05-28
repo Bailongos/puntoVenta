@@ -17,7 +17,7 @@ require '../dashboard-header.php';
 <div class="module-card">
     <h3>Ajuste Manual de Stock</h3>
     <br>
-    <form style="display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap;">
+    <form class="flex-row" style="align-items: flex-end;">
         <div class="form-group" style="flex: 2; min-width: 200px;">
             <label>Seleccionar Producto por Código:</label>
             <input type="text" class="form-control" placeholder="Ingresa código de barras...">
@@ -28,11 +28,11 @@ require '../dashboard-header.php';
         </div>
         <div class="form-group" style="flex: 1; min-width: 150px;">
             <label>Fecha de Movimiento:</label>
-            <input type="date" class="form-control" value="2026-05-26">
+            <input type="date" class="form-control" value="2026-05-28">
         </div>
-        <div style="margin-bottom: 15px; display: flex; gap: 10px;">
-            <button type="button" class="btn btn-success">📥 Registrar Entrada</button>
-            <button type="button" class="btn btn-danger">📤 Registrar Salida</button>
+        <div class="flex-row">
+            <button type="button" class="btn btn-success"><span class="material-icons">download</span> Registrar Entrada</button>
+            <button type="button" class="btn btn-danger"><span class="material-icons">upload</span> Registrar Salida</button>
         </div>
     </form>
 </div>
@@ -51,18 +51,18 @@ require '../dashboard-header.php';
         </thead>
         <tbody>
             <tr>
-                <td>2026-05-26 14:30</td>
+                <td>2026-05-28 14:30</td>
                 <td>987654321</td>
                 <td>Producto de Muestra A</td>
                 <td><span class="badge badge-active">Alta por Factura</span></td>
-                <td style="font-weight: bold; color: var(--dash-primary);">+50 unidades</td>
+                <td class="text-primary fw-bold">+50 unidades</td>
             </tr>
             <tr>
-                <td>2026-05-26 15:10</td>
+                <td>2026-05-28 15:10</td>
                 <td>123456789</td>
                 <td>Producto de Muestra B</td>
                 <td><span class="badge badge-inactive">Baja por Venta</span></td>
-                <td style="font-weight: bold; color: #ef4444;">-2 unidades</td>
+                <td class="text-danger fw-bold">-2 unidades</td>
             </tr>
         </tbody>
     </table>
