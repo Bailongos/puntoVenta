@@ -1,41 +1,84 @@
+<?php
+session_start();
+require_once 'conexion.php';
+
+if (isset($_SESSION['usuario'])) {
+    header('Location: menu.php');
+    exit;
+}
+
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $usuario = trim($_POST['usuario'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if ($usuario === '' || $password === '') {
+        $error = 'Todos los campos son obligatorios.';
+    } else {
+        $stmt = $conn->prepare("SELECT id, usuario, nombre_completo, password, rol, activo FROM usuarios WHERE usuario = ? LIMIT 1");
+        $stmt->bind_param('s', $usuario);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 1) {
+            $user = $result->fetch_assoc();
+
+            if (!$user['activo']) {
+                $error = 'Esta cuenta está desactivada. Contacta al administrador.';
+            } elseif (password_verify($password, $user['password'])) {
+                $_SESSION['usuario'] = $user['usuario'];
+                $_SESSION['nombre_completo'] = $user['nombre_completo'];
+                $_SESSION['rol'] = $user['rol'];
+                $_SESSION['id_usuario'] = $user['id'];
+
+                header('Location: menu.php');
+                exit;
+            } else {
+                $error = 'Contraseña incorrecta.';
+            }
+        } else {
+            $error = 'El usuario no existe.';
+        }
+        $stmt->close();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maqueta - Login</title>
+    <title>Iniciar Sesión - Punto de Venta</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <!-- login-wrapper: Centra todo el contenido en la pantalla completa -->
     <div class="login-wrapper">
-        
-        <!-- login-box: Tarjeta blanca con sombra para el formulario -->
         <div class="login-box">
             <h2>🔐 Iniciar Sesión</h2>
             <p style="margin-bottom: 20px; color: var(--secondary-color);">Introduce tus credenciales de acceso</p>
-            
-            <form action="pos.html" method="GET">
-                <!-- form-group: Separa cada campo con su respectiva etiqueta -->
+
+            <?php if ($error): ?>
+                <div style="background: #fee2e2; color: #991b1b; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 0.9em;">
+                    <?php echo htmlspecialchars($error); ?>
+                </div>
+            <?php endif; ?>
+
+            <form method="POST" action="login.php">
                 <div class="form-group">
                     <label for="usuario">Usuario:</label>
-                    <!-- form-control: Estiliza el input de forma limpia con bordes suaves -->
-                    <input type="text" id="usuario" class="form-control" placeholder="Ej. administrador" required>
+                    <input type="text" id="usuario" name="usuario" class="form-control" placeholder="Ej. administrador" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="password">Contraseña:</label>
-                    <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
                 </div>
-                
-                <!-- btn y btn-primary: Botón azul con transiciones al pasar el mouse -->
                 <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
                     Ingresar al Sistema
                 </button>
             </form>
         </div>
     </div>
-
 </body>
 </html>
+<?php $conn->close(); ?>
