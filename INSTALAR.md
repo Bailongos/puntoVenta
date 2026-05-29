@@ -53,7 +53,7 @@ http://localhost/punto-de-venta-ruben/migracion.php
 1. Ir a:
 
 ```
-http://localhost/punto-de-venta-ruben/login.php
+http://localhost/punto-de-venta-ruben/auth/login.php
 ```
 
 2. Ingresar las credenciales:
@@ -84,36 +84,55 @@ Una vez dentro del panel:
 
 ```
 punto-de-venta-ruben/
-├── login.php              → Inicio de sesión
-├── register.php           → Registro público
-├── recuperar.php          → Recuperación de contraseña
-├── index.php              → Panel de inicio
+├── index.php              → Panel de inicio (dashboard)
 ├── migracion.php          → Instalación de base de datos
-├── conexion.php           → Configuración de base de datos
-├── funciones.php          → Helper de permisos
-├── navbar.php             → Menú lateral
-├── menu.css               → Estilos del panel
-├── main.js                → JavaScript global
+├── INSTALAR.md            → Este manual
 │
-├── Articulos/
-│   └── articulos.php      → Módulo de artículos
+├── config/
+│   ├── conexion.php       → Configuración de base de datos
+│   └── funciones.php      → Helper de permisos
 │
-├── Clientes/
-│   └── clientes.php       → Módulo de clientes
+├── includes/
+│   ├── dashboard-header.php  → Header del panel
+│   ├── dashboard-footer.php  → Footer del panel + modal ticket
+│   └── navbar.php         → Menú lateral (sidebar)
 │
-├── Inventarios/
-│   └── inventarios.php    → Módulo de inventarios
+├── assets/
+│   ├── css/
+│   │   ├── menu.css       → Estilos del panel
+│   │   ├── login.css      → Estilos de login
+│   │   └── style.css      → Estilos legacy
+│   └── js/
+│       └── main.js        → JavaScript global
 │
-├── Punto_De_Venta/
-│   └── PuntoDeVenta.php   → Punto de venta (POS)
+├── auth/
+│   ├── login.php          → Inicio de sesión
+│   ├── register.php       → Registro público
+│   ├── recuperar.php      → Recuperación de contraseña
+│   └── cerrar_sesion.php  → Cerrar sesión
 │
-├── Reportes/
-│   └── reportes.php       → Reportes
+├── api/
+│   ├── ver_ticket.php     → AJAX: detalle de ticket
+│   └── exportar.php       → Exportar Excel/PDF
 │
-└── Usuarios/
-    ├── usuarios.php       → Gestión de usuarios
-    ├── roles.php          → Gestión de roles
-    └── permisos.php       → Matriz de permisos
+└── modules/
+    ├── articulos/
+    │   └── articulos.php  → Módulo de artículos
+    ├── clientes/
+    │   └── clientes.php   → Módulo de clientes
+    ├── corte_caja/
+    │   └── corte_caja.php → Corte de caja
+    ├── inventarios/
+    │   └── inventarios.php → Módulo de inventarios
+    ├── pos/
+    │   └── pos.php        → Punto de venta (POS)
+    ├── reportes/
+    │   └── reportes.php   → Reportes
+    └── usuarios/
+        ├── usuarios.php   → Gestión de usuarios
+        ├── roles.php      → Gestión de roles
+        ├── permisos.php   → Matriz de permisos
+        └── usuarios.css   → Estilos del módulo
 ```
 
 ---
