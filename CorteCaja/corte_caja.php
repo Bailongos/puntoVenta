@@ -1,1 +1,1 @@
-<?php header('Location: ../modules/CorteCaja/corte_caja.php'); exit; 
+<?php header('Location: ../modules/corte_caja/corte_caja.php'); exit; 

@@ -1,1 +1,1 @@
-<?php header('Location: ../modules/Clientes/clientes.php'); exit; 
+<?php header('Location: ../modules/clientes/clientes.php'); exit; 

@@ -1,1 +1,1 @@
-<?php header('Location: ../modules/Articulos/articulos.php'); exit; 
+<?php header('Location: ../modules/articulos/articulos.php'); exit; 

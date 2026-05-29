@@ -1,1 +1,1 @@
-<?php header('Location: ../modules/Inventarios/inventarios.php'); exit; 
+<?php header('Location: ../modules/inventarios/inventarios.php'); exit; 
