@@ -102,7 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($accion === 'corte') {
-        $fecha = $input['fecha'] ?? date('Y-m-d');
+        $fecha_sql = $conn->query("SELECT CURDATE() AS d")->fetch_assoc()['d'];
+        $fecha = $input['fecha'] ?? $fecha_sql;
         $ventas = $conn->query("SELECT COUNT(*) AS total_ventas, COALESCE(SUM(total),0) AS total_ingresos FROM ventas WHERE DATE(created_at) = '$fecha' AND estatus = 'completada'")->fetch_assoc();
         $productos_vendidos = $conn->query("SELECT COALESCE(SUM(vd.cantidad),0) AS total FROM ventas_detalle vd JOIN ventas v ON vd.venta_id = v.id WHERE DATE(v.created_at) = '$fecha' AND v.estatus = 'completada'")->fetch_assoc();
         $detalle = $conn->query("SELECT v.id, v.folio, v.total, v.created_at, u.usuario FROM ventas v LEFT JOIN usuarios u ON v.usuario_id = u.id WHERE DATE(v.created_at) = '$fecha' AND v.estatus = 'completada' ORDER BY v.created_at DESC");

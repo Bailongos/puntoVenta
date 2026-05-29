@@ -13,3 +13,4 @@ if ($conn->connect_error) {
 $conn->query("CREATE DATABASE IF NOT EXISTS `$dbname` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
 $conn->select_db($dbname);
 $conn->set_charset('utf8mb4');
+date_default_timezone_set('America/Mexico_City');
