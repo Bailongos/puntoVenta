@@ -27,8 +27,8 @@ while ($row = $rp_result->fetch_assoc()) {
 $modulo_activo = 'permisos';
 $page_title = 'Permisos';
 $page_search = 'Buscar permisos...';
-$root_path = '../';
-require '../dashboard-header.php';
+$root_path = '../../';
+require '../../includes/dashboard-header.php';
 
 $saved = isset($_GET['saved']);
 ?>
@@ -92,4 +92,4 @@ $saved = isset($_GET['saved']);
     </form>
 </div>
 
-<?php require '../dashboard-footer.php'; ?>
+<?php require '../../includes/dashboard-footer.php'; ?>

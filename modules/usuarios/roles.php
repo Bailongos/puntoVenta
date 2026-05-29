@@ -29,8 +29,8 @@ $roles = $conn->query("SELECT r.*, (SELECT COUNT(*) FROM usuarios WHERE rol_id =
 $modulo_activo = 'roles';
 $page_title = 'Roles';
 $page_search = 'Buscar roles...';
-$root_path = '../';
-require '../dashboard-header.php';
+$root_path = '../../';
+require '../../includes/dashboard-header.php';
 ?>
 
 <div class="page-heading">
@@ -100,4 +100,4 @@ require '../dashboard-header.php';
     </table>
 </div>
 
-<?php require '../dashboard-footer.php'; ?>
+<?php require '../../includes/dashboard-footer.php'; ?>
