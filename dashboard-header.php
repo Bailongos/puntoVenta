@@ -7,6 +7,7 @@ if (!isset($_SESSION['usuario'])) {
     exit;
 }
 
+require_once __DIR__ . '/conexion.php';
 require_once __DIR__ . '/funciones.php';
 
 $usuario_nombre = $_SESSION['nombre_completo'] ?? 'Usuario';
@@ -15,6 +16,21 @@ $usuario_iniciales = strtoupper(substr($usuario_nombre, 0, 2));
 
 $page_title = $page_title ?? 'Panel';
 $page_search = $page_search ?? 'Buscar...';
+
+$notificaciones = [];
+$tabla_articulos = $conn->query("SHOW TABLES LIKE 'articulos'");
+if ($tabla_articulos->num_rows > 0) {
+    $bajo_stock = $conn->query("SELECT id, descripcion, stock_actual FROM articulos WHERE stock_actual <= 5 AND (estatus IS NULL OR estatus != 'baja') ORDER BY stock_actual ASC LIMIT 10");
+    while ($ns = $bajo_stock->fetch_assoc()) {
+        $notificaciones[] = [
+            'icono' => $ns['stock_actual'] == 0 ? 'block' : 'inventory_2',
+            'mensaje' => $ns['descripcion'] . ' — Stock: ' . $ns['stock_actual'],
+            'url' => ($root_path ?: '') . 'Inventarios/inventarios.php',
+            'critico' => $ns['stock_actual'] == 0
+        ];
+    }
+}
+$notif_count = count($notificaciones);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -45,10 +61,25 @@ $page_search = $page_search ?? 'Buscar...';
                 </div>
 
                 <div class="topbar-right">
-                    <button class="notification-button" type="button">
-                        <span class="material-icons">notifications</span>
-                        <span class="notification-badge">0</span>
-                    </button>
+                    <div class="notification-wrapper">
+                        <button class="notification-button" type="button" id="notif-btn">
+                            <span class="material-icons">notifications</span>
+                            <span class="notification-badge <?php echo $notif_count > 0 ? 'has-alerts' : ''; ?>"><?php echo $notif_count; ?></span>
+                        </button>
+                        <div class="notif-dropdown" id="notif-dropdown">
+                            <div class="notif-header">Notificaciones</div>
+                            <?php if ($notif_count === 0): ?>
+                            <div class="notif-empty">Sin notificaciones</div>
+                            <?php else: ?>
+                            <?php foreach ($notificaciones as $n): ?>
+                            <a href="<?php echo $n['url']; ?>" class="notif-item <?php echo $n['critico'] ? 'critico' : ''; ?>">
+                                <span class="material-icons notif-icon"><?php echo $n['icono']; ?></span>
+                                <span><?php echo htmlspecialchars($n['mensaje']); ?></span>
+                            </a>
+                            <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 </div>
             </header>
 

@@ -1,7 +1,6 @@
 (function () {
   'use strict';
 
-  const notificationBtn = document.querySelector('.notification-button');
   const searchInput = document.querySelector('.search-box input');
 
   function showToast(message, type) {
@@ -19,9 +18,18 @@
     }, 3000);
   }
 
-  if (notificationBtn) {
-    notificationBtn.addEventListener('click', function () {
-      showToast('No tienes notificaciones pendientes.', 'info');
+  const notifBtn = document.getElementById('notif-btn');
+  const notifDropdown = document.getElementById('notif-dropdown');
+
+  if (notifBtn && notifDropdown) {
+    notifBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      notifDropdown.classList.toggle('abierto');
+    });
+    document.addEventListener('click', function (e) {
+      if (!notifBtn.contains(e.target)) {
+        notifDropdown.classList.remove('abierto');
+      }
     });
   }
 
