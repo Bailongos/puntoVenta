@@ -135,7 +135,7 @@ $admin_items = [
         <?php if (tiene_permiso('ver_corte_caja')): ?>
         <div class="sidebar-section-title">Operación</div>
 
-        <a href="<?php echo $url_base; ?>/Punto_De_Venta/PuntoDeVenta.php" class="sidebar-link <?php echo ($activo === 'corte_caja') ? 'active' : ''; ?>">
+        <a href="<?php echo $url_base; ?>/CorteCaja/corte_caja.php" class="sidebar-link <?php echo ($activo === 'corte_caja') ? 'active' : ''; ?>">
             <span class="sidebar-icon"><span class="material-icons">calculate</span></span>
             <span>Corte de Caja</span>
         </a>
