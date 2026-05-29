@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../conexion.php';
-require_once __DIR__ . '/../funciones.php';
+require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../config/funciones.php';
 
 $conn->query("CREATE TABLE IF NOT EXISTS ventas (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -130,9 +130,9 @@ $hoy_ventas = $conn->query("SELECT COUNT(*) AS c, COALESCE(SUM(total),0) AS t FR
 $modulo_activo = 'pos';
 $page_title = 'Punto de Venta';
 $page_search = 'Buscar productos...';
-$root_path = '../';
+$root_path = '../../';
 $body_class = 'pos-mode';
-require '../dashboard-header.php';
+require '../../includes/dashboard-header.php';
 ?>
 
 <div class="page-heading">
@@ -146,7 +146,7 @@ require '../dashboard-header.php';
 <div class="pos-layout">
     <div class="pos-products-grid">
         <?php if ($productos->num_rows === 0): ?>
-        <div class="empty-state" style="grid-column:1/-1;">No hay productos disponibles con stock. <a href="../Articulos/articulos.php">Registrar artículos</a></div>
+        <div class="empty-state" style="grid-column:1/-1;">No hay productos disponibles con stock. <a href="../../modules/articulos/articulos.php">Registrar artículos</a></div>
         <?php else: ?>
         <?php while ($p = $productos->fetch_assoc()): ?>
         <div class="product-card" data-id="<?php echo $p['id']; ?>" data-nombre="<?php echo htmlspecialchars($p['descripcion']); ?>" data-precio="<?php echo $p['precio_venta']; ?>" data-stock-original="<?php echo $p['stock_actual']; ?>">
@@ -458,4 +458,4 @@ require '../dashboard-header.php';
 })();
 </script>
 
-<?php require '../dashboard-footer.php'; ?>
+<?php require '../../includes/dashboard-footer.php'; ?>

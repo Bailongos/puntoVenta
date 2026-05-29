@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/conexion.php';
+require_once __DIR__ . '/config/conexion.php';
 
 $mensajes = [];
 $error = false;
@@ -222,7 +222,7 @@ $mensajes[] = "<br><strong>Resumen:</strong> $check_roles roles · $check_permis
     <?php foreach ($mensajes as $m): ?>
       <div class="msg <?php echo strpos($m, '✗') === 0 ? 'err' : (strpos($m, '✓') === 0 ? 'ok' : ''); ?>"><?php echo $m; ?></div>
     <?php endforeach; ?>
-    <a href="login.php">← Ir al login</a>
+    <a href="auth/login.php">← Ir al login</a>
   </div>
 </body>
 </html>

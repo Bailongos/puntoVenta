@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../conexion.php';
-require_once __DIR__ . '/../funciones.php';
+require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../config/funciones.php';
 
 $conn->query("CREATE TABLE IF NOT EXISTS inventario_movimientos (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -77,8 +77,8 @@ $salidas = $conn->query("SELECT COALESCE(SUM(cantidad),0) AS t FROM inventario_m
 $modulo_activo = 'inventarios';
 $page_title = 'Inventarios';
 $page_search = 'Buscar en inventario...';
-$root_path = '../';
-require '../dashboard-header.php';
+$root_path = '../../';
+require '../../includes/dashboard-header.php';
 ?>
 
 <div class="page-heading">
@@ -192,4 +192,4 @@ require '../dashboard-header.php';
     </table>
 </div>
 
-<?php require '../dashboard-footer.php'; ?>
+<?php require '../../includes/dashboard-footer.php'; ?>

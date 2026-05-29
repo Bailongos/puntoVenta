@@ -3,12 +3,12 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 if (!isset($_SESSION['usuario'])) {
-    header('Location: ' . ($root_path ?: '') . 'login.php');
+    header('Location: ' . ($root_path ?: '') . 'auth/login.php');
     exit;
 }
 
-require_once __DIR__ . '/conexion.php';
-require_once __DIR__ . '/funciones.php';
+require_once __DIR__ . '/../config/conexion.php';
+require_once __DIR__ . '/../config/funciones.php';
 
 $usuario_nombre = $_SESSION['nombre_completo'] ?? 'Usuario';
 $usuario_rol = $_SESSION['rol_nombre'] ?? $_SESSION['rol'] ?? '';
@@ -25,7 +25,7 @@ if ($tabla_articulos->num_rows > 0) {
         $notificaciones[] = [
             'icono' => $ns['stock_actual'] == 0 ? 'block' : 'inventory_2',
             'mensaje' => $ns['descripcion'] . ' — Stock: ' . $ns['stock_actual'],
-            'url' => ($root_path ?: '') . 'Inventarios/inventarios.php',
+            'url' => ($root_path ?: '') . 'modules/inventarios/inventarios.php',
             'critico' => $ns['stock_actual'] == 0
         ];
     }
@@ -42,7 +42,7 @@ $notif_count = count($notificaciones);
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo $root_path; ?>menu.css?v=5">
+    <link rel="stylesheet" href="<?php echo $root_path; ?>assets/css/menu.css?v=5">
 </head>
 <body class="dashboard-body <?php echo $body_class ?? ''; ?>">
 

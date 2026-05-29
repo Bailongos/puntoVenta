@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../conexion.php';
-require_once __DIR__ . '/../funciones.php';
+require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../config/funciones.php';
 
 // ── Crear usuario ──
 $mensaje = '';
@@ -47,8 +47,8 @@ $total_administradores = $conn->query("SELECT COUNT(*) AS c FROM usuarios WHERE 
 $modulo_activo = 'usuarios';
 $page_title = 'Usuarios';
 $page_search = 'Buscar usuarios, roles o estados...';
-$root_path = '../';
-require '../dashboard-header.php';
+$root_path = '../../';
+require '../../includes/dashboard-header.php';
 ?>
 
 <div class="page-heading">
@@ -183,4 +183,4 @@ require '../dashboard-header.php';
 
 </div>
 
-<?php require '../dashboard-footer.php'; ?>
+<?php require '../../includes/dashboard-footer.php'; ?>

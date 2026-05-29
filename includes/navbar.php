@@ -2,16 +2,15 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (!isset($_SESSION['usuario'])) {
-    header('Location: login.php');
-    exit;
-}
-
-require_once __DIR__ . '/funciones.php';
-
 $script_path = trim($_SERVER['SCRIPT_NAME'], '/');
 $project_folder = explode('/', $script_path)[0];
 $url_base = '/' . $project_folder;
+if (!isset($_SESSION['usuario'])) {
+    header('Location: ' . $url_base . '/auth/login.php');
+    exit;
+}
+
+require_once __DIR__ . '/../config/funciones.php';
 
 $activo = isset($modulo_activo) ? $modulo_activo : '';
 
@@ -24,42 +23,42 @@ $menu_items = [
         'id' => 'inicio',
         'label' => 'Inicio',
         'icon' => 'home',
-        'url' => $url_base . '/menu.php',
+        'url' => $url_base . '/index.php',
         'permiso' => 'ver_inicio'
     ],
     [
         'id' => 'pos',
         'label' => 'Punto de Venta',
         'icon' => 'point_of_sale',
-        'url' => $url_base . '/Punto_De_Venta/PuntoDeVenta.php',
+        'url' => $url_base . '/modules/pos/pos.php',
         'permiso' => 'ver_punto_venta'
     ],
     [
         'id' => 'clientes',
         'label' => 'Clientes',
         'icon' => 'group',
-        'url' => $url_base . '/Clientes/clientes.php',
+        'url' => $url_base . '/modules/clientes/clientes.php',
         'permiso' => 'ver_clientes'
     ],
     [
         'id' => 'articulos',
         'label' => 'Artículos',
         'icon' => 'sell',
-        'url' => $url_base . '/Articulos/articulos.php',
+        'url' => $url_base . '/modules/articulos/articulos.php',
         'permiso' => 'ver_articulos'
     ],
     [
         'id' => 'inventarios',
         'label' => 'Inventario',
         'icon' => 'inventory_2',
-        'url' => $url_base . '/Inventarios/inventarios.php',
+        'url' => $url_base . '/modules/inventarios/inventarios.php',
         'permiso' => 'ver_inventario'
     ],
     [
         'id' => 'reportes',
         'label' => 'Reportes',
         'icon' => 'bar_chart',
-        'url' => $url_base . '/Reportes/reportes.php',
+        'url' => $url_base . '/modules/reportes/reportes.php',
         'permiso' => 'ver_reportes'
     ],
 ];
@@ -69,21 +68,21 @@ $admin_items = [
     'id' => 'usuarios',
     'label' => 'Usuarios',
     'icon' => 'manage_accounts',
-    'url' => $url_base . '/Usuarios/usuarios.php',
+    'url' => $url_base . '/modules/usuarios/usuarios.php',
     'permiso' => 'ver_usuarios'
     ],
     [
         'id' => 'roles',
         'label' => 'Roles',
         'icon' => 'verified_user',
-        'url' => $url_base . '/Usuarios/roles.php',
+        'url' => $url_base . '/modules/usuarios/roles.php',
         'permiso' => 'ver_roles'
     ],
     [
         'id' => 'permisos',
         'label' => 'Permisos',
         'icon' => 'lock',
-        'url' => $url_base . '/Usuarios/permisos.php',
+        'url' => $url_base . '/modules/usuarios/permisos.php',
         'permiso' => 'ver_permisos'
     ],
 ];

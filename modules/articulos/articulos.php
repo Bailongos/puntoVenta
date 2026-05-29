@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../conexion.php';
-require_once __DIR__ . '/../funciones.php';
+require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../config/funciones.php';
 
 $conn->query("CREATE TABLE IF NOT EXISTS articulos (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -55,8 +55,8 @@ $inactivos = $conn->query("SELECT COUNT(*) AS c FROM articulos WHERE estatus='ba
 $modulo_activo = 'articulos';
 $page_title = 'Artículos';
 $page_search = 'Buscar artículos...';
-$root_path = '../';
-require '../dashboard-header.php';
+$root_path = '../../';
+require '../../includes/dashboard-header.php';
 ?>
 
 <div class="page-heading">
@@ -176,4 +176,4 @@ require '../dashboard-header.php';
 
 </div>
 
-<?php require '../dashboard-footer.php'; ?>
+<?php require '../../includes/dashboard-footer.php'; ?>

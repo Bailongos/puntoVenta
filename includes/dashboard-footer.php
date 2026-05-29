@@ -38,7 +38,7 @@
     </div>
 </div>
 
-<script src="<?php echo $root_path; ?>main.js"></script>
+<script src="<?php echo $root_path; ?>assets/js/main.js"></script>
 <script>
 (function() {
     var tmModal = document.getElementById('ticket-modal');
@@ -52,7 +52,7 @@
     }
 
     window.verTicket = function(id) {
-        fetch('<?php echo $root_path; ?>ajax/ver_ticket.php?id=' + id)
+        fetch('<?php echo $root_path; ?>api/ver_ticket.php?id=' + id)
             .then(function(r) { return r.json(); })
             .then(function(data) {
                 if (!data.success) { alert(data.error); return; }

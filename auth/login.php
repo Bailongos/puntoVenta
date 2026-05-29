@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once 'conexion.php';
-require_once 'funciones.php';
+require_once __DIR__ . '/../config/conexion.php';
+require_once __DIR__ . '/../config/funciones.php';
 
 if (isset($_SESSION['usuario'])) {
-    header('Location: menu.php');
+    header('Location: ../index.php');
     exit;
 }
 
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 $_SESSION['permisos'] = $permisos;
 
-                header('Location: menu.php');
+                header('Location: ../index.php');
                 exit;
             } else {
                 $error = 'Contraseña incorrecta.';
@@ -76,8 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="login.css?v=4">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/login.css?v=4">
 </head>
 <body class="login-body">
 

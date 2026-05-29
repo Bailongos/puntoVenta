@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../conexion.php';
-require_once __DIR__ . '/../funciones.php';
+require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../config/funciones.php';
 
 $conn->query("CREATE TABLE IF NOT EXISTS ventas (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -48,8 +48,8 @@ $total_movimientos = $conn->query("SELECT COUNT(*) AS c FROM inventario_movimien
 $modulo_activo = 'reportes';
 $page_title = 'Reportes';
 $page_search = 'Buscar tickets...';
-$root_path = '../';
-require '../dashboard-header.php';
+$root_path = '../../';
+require '../../includes/dashboard-header.php';
 ?>
 
 <div class="page-heading">
@@ -108,8 +108,8 @@ require '../dashboard-header.php';
         </div>
         <button type="submit" class="btn btn-primary"><span class="material-icons">search</span> Aplicar Filtros</button>
         <div style="margin-left:auto;display:flex;gap:8px;align-items:flex-end;">
-            <a href="<?php echo $root_path; ?>ajax/exportar.php?tipo=excel&origen=reportes&desde=<?php echo urlencode($fecha_desde); ?>&hasta=<?php echo urlencode($fecha_hasta); ?>&folio=<?php echo urlencode($buscar_folio); ?>" class="btn btn-success btn-sm"><span class="material-icons">table_chart</span> Excel</a>
-            <a href="<?php echo $root_path; ?>ajax/exportar.php?tipo=pdf&origen=reportes&desde=<?php echo urlencode($fecha_desde); ?>&hasta=<?php echo urlencode($fecha_hasta); ?>&folio=<?php echo urlencode($buscar_folio); ?>" class="btn btn-info btn-sm" target="_blank"><span class="material-icons">picture_as_pdf</span> PDF</a>
+            <a href="<?php echo $root_path; ?>api/exportar.php?tipo=excel&origen=reportes&desde=<?php echo urlencode($fecha_desde); ?>&hasta=<?php echo urlencode($fecha_hasta); ?>&folio=<?php echo urlencode($buscar_folio); ?>" class="btn btn-success btn-sm"><span class="material-icons">table_chart</span> Excel</a>
+            <a href="<?php echo $root_path; ?>api/exportar.php?tipo=pdf&origen=reportes&desde=<?php echo urlencode($fecha_desde); ?>&hasta=<?php echo urlencode($fecha_hasta); ?>&folio=<?php echo urlencode($buscar_folio); ?>" class="btn btn-info btn-sm" target="_blank"><span class="material-icons">picture_as_pdf</span> PDF</a>
         </div>
     </form>
 </div>
@@ -148,4 +148,4 @@ require '../dashboard-header.php';
     </table>
 </div>
 
-<?php require '../dashboard-footer.php'; ?>
+<?php require '../../includes/dashboard-footer.php'; ?>

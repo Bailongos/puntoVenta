@@ -3,7 +3,7 @@ $modulo_activo = 'inicio';
 $page_title = 'Menú Principal';
 $page_search = 'Buscar clientes, artículos o tickets...';
 $root_path = '';
-require 'dashboard-header.php';
+require 'includes/dashboard-header.php';
 ?>
 
 <div class="page-heading">
@@ -13,7 +13,7 @@ require 'dashboard-header.php';
         <p>Resumen general del punto de venta y accesos rápidos del sistema.</p>
     </div>
 
-    <a href="Punto_De_Venta/PuntoDeVenta.php" class="btn btn-primary" style="min-height: 42px;">
+    <a href="modules/pos/pos.php" class="btn btn-primary" style="min-height: 42px;">
         <span class="material-icons">add</span> Nueva venta
     </a>
 </div>
@@ -86,7 +86,7 @@ require 'dashboard-header.php';
         </div>
 
         <div class="action-list">
-            <a href="Punto_De_Venta/PuntoDeVenta.php">
+            <a href="modules/pos/pos.php">
                 <span><span class="material-icons">shopping_cart</span></span>
                 <div>
                     <strong>Nueva venta</strong>
@@ -95,7 +95,7 @@ require 'dashboard-header.php';
                 <b>›</b>
             </a>
 
-            <a href="Clientes/clientes.php">
+            <a href="modules/clientes/clientes.php">
                 <span><span class="material-icons">person_add</span></span>
                 <div>
                     <strong>Nuevo cliente</strong>
@@ -104,7 +104,7 @@ require 'dashboard-header.php';
                 <b>›</b>
             </a>
 
-            <a href="Articulos/articulos.php">
+            <a href="modules/articulos/articulos.php">
                 <span><span class="material-icons">search</span></span>
                 <div>
                     <strong>Buscar artículo</strong>
@@ -133,7 +133,7 @@ require 'dashboard-header.php';
             <p>Últimos movimientos registrados en el sistema.</p>
         </div>
 
-        <a href="Reportes/reportes.php">Ver reportes</a>
+        <a href="modules/reportes/reportes.php">Ver reportes</a>
     </div>
 
     <div class="activity-table">
@@ -158,4 +158,4 @@ require 'dashboard-header.php';
     </div>
 </section>
 
-<?php require 'dashboard-footer.php'; ?>
+<?php require 'includes/dashboard-footer.php'; ?>

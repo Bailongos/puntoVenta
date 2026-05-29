@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../conexion.php';
+require_once __DIR__ . '/../../config/conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion'])) {
     if ($_POST['accion'] === 'crear') {

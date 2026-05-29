@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../conexion.php';
+require_once __DIR__ . '/../../config/conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conn->query("DELETE FROM rol_permisos");

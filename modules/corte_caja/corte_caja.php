@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../conexion.php';
-require_once __DIR__ . '/../funciones.php';
+require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../config/funciones.php';
 
 $fecha = $_GET['fecha'] ?? date('Y-m-d');
 
@@ -36,8 +36,8 @@ $ventas = $conn->query("
 $modulo_activo = 'corte_caja';
 $page_title = 'Corte de Caja';
 $page_search = 'Buscar tickets...';
-$root_path = '../';
-require '../dashboard-header.php';
+$root_path = '../../';
+require '../../includes/dashboard-header.php';
 ?>
 
 <div class="page-heading">
@@ -88,8 +88,8 @@ require '../dashboard-header.php';
         </div>
         <button type="submit" class="btn btn-primary"><span class="material-icons">search</span> Consultar</button>
         <div style="margin-left:auto;display:flex;gap:8px;align-items:flex-end;">
-            <a href="<?php echo $root_path; ?>ajax/exportar.php?tipo=excel&origen=corte&fecha=<?php echo urlencode($fecha); ?>" class="btn btn-success btn-sm"><span class="material-icons">table_chart</span> Excel</a>
-            <a href="<?php echo $root_path; ?>ajax/exportar.php?tipo=pdf&origen=corte&fecha=<?php echo urlencode($fecha); ?>" class="btn btn-info btn-sm" target="_blank"><span class="material-icons">picture_as_pdf</span> PDF</a>
+            <a href="<?php echo $root_path; ?>api/exportar.php?tipo=excel&origen=corte&fecha=<?php echo urlencode($fecha); ?>" class="btn btn-success btn-sm"><span class="material-icons">table_chart</span> Excel</a>
+            <a href="<?php echo $root_path; ?>api/exportar.php?tipo=pdf&origen=corte&fecha=<?php echo urlencode($fecha); ?>" class="btn btn-info btn-sm" target="_blank"><span class="material-icons">picture_as_pdf</span> PDF</a>
         </div>
     </form>
 </div>
@@ -126,4 +126,4 @@ require '../dashboard-header.php';
     </table>
 </div>
 
-<?php require '../dashboard-footer.php'; ?>
+<?php require '../../includes/dashboard-footer.php'; ?>

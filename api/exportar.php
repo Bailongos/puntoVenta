@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../conexion.php';
+require_once __DIR__ . '/../config/conexion.php';
 
 $tipo = $_GET['tipo'] ?? 'excel';
 $fecha = $_GET['fecha'] ?? date('Y-m-d');
