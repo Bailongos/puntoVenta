@@ -2,6 +2,30 @@
 require_once __DIR__ . '/../conexion.php';
 require_once __DIR__ . '/../funciones.php';
 
+$conn->query("CREATE TABLE IF NOT EXISTS ventas (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  folio VARCHAR(20) NOT NULL UNIQUE,
+  total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  forma_pago VARCHAR(50) DEFAULT 'efectivo',
+  cliente_id INT DEFAULT NULL,
+  usuario_id INT DEFAULT NULL,
+  estatus ENUM('completada','cancelada') DEFAULT 'completada',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (cliente_id) REFERENCES clientes(id),
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+$conn->query("CREATE TABLE IF NOT EXISTS ventas_detalle (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  venta_id INT NOT NULL,
+  producto_id INT NOT NULL,
+  cantidad INT NOT NULL,
+  precio_unitario DECIMAL(10,2) NOT NULL,
+  subtotal DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (venta_id) REFERENCES ventas(id) ON DELETE CASCADE,
+  FOREIGN KEY (producto_id) REFERENCES articulos(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
 $fecha_desde = $_GET['desde'] ?? date('Y-m-d', strtotime('-30 days'));
 $fecha_hasta = $_GET['hasta'] ?? date('Y-m-d');
 $buscar_folio = trim($_GET['folio'] ?? '');
