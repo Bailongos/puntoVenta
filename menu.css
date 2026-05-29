@@ -952,6 +952,28 @@ select.form-control {
     background: var(--danger-soft);
 }
 
+.btn-qty {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    line-height: 1;
+    color: var(--text-secondary);
+    transition: background 0.12s, border-color 0.12s;
+    vertical-align: middle;
+}
+
+.btn-qty:hover {
+    background: #ffffff;
+    border-color: var(--primary);
+    color: var(--primary-dark);
+}
+
 .toast-notification {
     position: fixed;
     bottom: 24px;

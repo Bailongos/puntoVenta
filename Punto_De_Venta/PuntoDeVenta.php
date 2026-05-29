@@ -142,11 +142,11 @@ require '../dashboard-header.php';
         <div class="empty-state" style="grid-column:1/-1;">No hay productos disponibles con stock. <a href="../Articulos/articulos.php">Registrar artículos</a></div>
         <?php else: ?>
         <?php while ($p = $productos->fetch_assoc()): ?>
-        <div class="product-card" data-id="<?php echo $p['id']; ?>" data-nombre="<?php echo htmlspecialchars($p['descripcion']); ?>" data-precio="<?php echo $p['precio_venta']; ?>" data-stock="<?php echo $p['stock_actual']; ?>">
+        <div class="product-card" data-id="<?php echo $p['id']; ?>" data-nombre="<?php echo htmlspecialchars($p['descripcion']); ?>" data-precio="<?php echo $p['precio_venta']; ?>" data-stock-original="<?php echo $p['stock_actual']; ?>">
             <div class="product-img-placeholder"><span class="material-icons">inventory_2</span></div>
             <h4><?php echo htmlspecialchars($p['descripcion']); ?></h4>
             <p>$<?php echo number_format($p['precio_venta'], 2); ?></p>
-            <span style="font-size:11px;color:var(--muted);">Stock: <?php echo $p['stock_actual']; ?></span>
+            <span class="stock-label" style="font-size:11px;color:var(--muted);">Stock: <?php echo $p['stock_actual']; ?></span>
         </div>
         <?php endwhile; ?>
         <?php endif; ?>
@@ -211,6 +211,30 @@ require '../dashboard-header.php';
         }, 3000);
     }
 
+    function stockEnTicket(producto_id) {
+        var total = 0;
+        ticketItems.forEach(function(item) {
+            if (item.producto_id === producto_id) total += item.cantidad;
+        });
+        return total;
+    }
+
+    function actualizarStocks() {
+        productCards.forEach(function(card) {
+            var pid = parseInt(card.getAttribute('data-id')) || 0;
+            var original = parseInt(card.getAttribute('data-stock-original')) || 0;
+            var enTicket = stockEnTicket(pid);
+            var disponible = original - enTicket;
+            var label = card.querySelector('.stock-label');
+            if (label) {
+                label.textContent = 'Stock: ' + disponible;
+                label.style.color = disponible <= 0 ? 'var(--danger)' : (disponible <= 5 ? '#d97706' : 'var(--muted)');
+            }
+            card.style.opacity = disponible <= 0 ? '0.5' : '1';
+            card.style.cursor = disponible <= 0 ? 'default' : 'pointer';
+        });
+    }
+
     function actualizarTicket() {
         if (!ticketBody) return;
         ticketBody.innerHTML = '';
@@ -218,31 +242,70 @@ require '../dashboard-header.php';
             ticketBody.innerHTML = '<tr><td colspan="3" class="empty-state">Agrega productos al ticket</td></tr>';
             if (ticketTotal) ticketTotal.textContent = '$0.00';
             if (ticketCount) ticketCount.textContent = '0';
+            actualizarStocks();
             return;
         }
-        let total = 0;
+        var total = 0;
         ticketItems.forEach(function(item, index) {
-            const subtotal = item.precio * item.cantidad;
+            var subtotal = item.precio * item.cantidad;
             total += subtotal;
-            const row = document.createElement('tr');
+            var row = document.createElement('tr');
             row.innerHTML =
-                '<td>' + item.cantidad + ' x ' + item.nombre +
+                '<td style="white-space:nowrap;">' +
+                '<button class="btn-qty" data-index="' + index + '" data-dir="-1">−</button> ' +
+                item.cantidad +
+                ' <button class="btn-qty" data-index="' + index + '" data-dir="1">+</button> x ' +
+                item.nombre +
                 '</td><td class="text-right">$' + subtotal.toFixed(2) +
                 '</td><td class="td-actions"><button class="btn-remove-item" data-index="' + index + '">×</button></td>';
             ticketBody.appendChild(row);
         });
         if (ticketTotal) ticketTotal.textContent = '$' + total.toFixed(2);
         if (ticketCount) ticketCount.textContent = ticketItems.length;
+
         document.querySelectorAll('.btn-remove-item').forEach(function(btn) {
             btn.addEventListener('click', function() {
                 ticketItems.splice(parseInt(this.getAttribute('data-index')), 1);
                 actualizarTicket();
             });
         });
+
+        document.querySelectorAll('.btn-qty').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var idx = parseInt(this.getAttribute('data-index'));
+                var dir = parseInt(this.getAttribute('data-dir'));
+                var item = ticketItems[idx];
+                if (!item) return;
+                var nuevo = item.cantidad + dir;
+                if (nuevo <= 0) {
+                    ticketItems.splice(idx, 1);
+                } else {
+                    var card = document.querySelector('.product-card[data-id="' + item.producto_id + '"]');
+                    var original = parseInt(card ? card.getAttribute('data-stock-original') : '0') || 0;
+                    var enTicket = stockEnTicket(item.producto_id) - item.cantidad;
+                    if (nuevo > original - enTicket) {
+                        showToast('Stock insuficiente. Disponible: ' + (original - enTicket), 'error');
+                        return;
+                    }
+                    item.cantidad = nuevo;
+                }
+                actualizarTicket();
+            });
+        });
+
+        actualizarStocks();
     }
 
     function agregarAlTicket(nombre, precio, producto_id) {
-        const found = ticketItems.filter(function(i) { return i.nombre === nombre; });
+        var card = document.querySelector('.product-card[data-id="' + producto_id + '"]');
+        var original = parseInt(card ? card.getAttribute('data-stock-original') : '0') || 0;
+        var enTicket = stockEnTicket(producto_id);
+        if (enTicket >= original) {
+            showToast('Stock insuficiente para ' + nombre + '. Disponible: 0', 'error');
+            return;
+        }
+        var found = ticketItems.filter(function(i) { return i.producto_id === producto_id; });
         if (found.length > 0) {
             found[0].cantidad += 1;
         } else {
@@ -253,12 +316,15 @@ require '../dashboard-header.php';
     }
 
     productCards.forEach(function(card) {
-        const nombre = card.getAttribute('data-nombre');
-        const precio = parseFloat(card.getAttribute('data-precio')) || 0;
-        const producto_id = parseInt(card.getAttribute('data-id')) || 0;
-        const stock = parseInt(card.getAttribute('data-stock')) || 0;
+        var nombre = card.getAttribute('data-nombre');
+        var precio = parseFloat(card.getAttribute('data-precio')) || 0;
+        var producto_id = parseInt(card.getAttribute('data-id')) || 0;
         card.addEventListener('click', function() {
-            if (stock <= 0) { showToast('Producto sin stock', 'error'); return; }
+            var original = parseInt(card.getAttribute('data-stock-original')) || 0;
+            if (original <= 0 || stockEnTicket(producto_id) >= original) {
+                showToast('Producto sin stock disponible', 'error');
+                return;
+            }
             agregarAlTicket(nombre, precio, producto_id);
         });
     });
@@ -277,6 +343,12 @@ require '../dashboard-header.php';
             .then(function(r) { return r.json(); })
             .then(function(data) {
                 if (data.success) {
+                    productCards.forEach(function(card) {
+                        var pid = parseInt(card.getAttribute('data-id')) || 0;
+                        var original = parseInt(card.getAttribute('data-stock-original')) || 0;
+                        var enTicket = stockEnTicket(pid);
+                        card.setAttribute('data-stock-original', original - enTicket);
+                    });
                     showToast('Venta #' + data.folio + ' cobrada: $' + data.total, 'success');
                     ticketItems = [];
                     actualizarTicket();
