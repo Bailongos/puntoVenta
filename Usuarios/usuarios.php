@@ -1,0 +1,1 @@
+<?php header('Location: ../modules/usuarios/usuarios.php'); exit; 

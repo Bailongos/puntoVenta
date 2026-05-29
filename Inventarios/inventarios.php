@@ -1,0 +1,1 @@
+<?php header('Location: ../modules/Inventarios/inventarios.php'); exit; 

@@ -1,0 +1,1 @@
+<?php header('Location: ../modules/Articulos/articulos.php'); exit; 

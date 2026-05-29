@@ -1,0 +1,1 @@
+<?php header('Location: ../modules/Clientes/clientes.php'); exit; 

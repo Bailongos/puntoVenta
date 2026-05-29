@@ -1,0 +1,1 @@
+<?php header('Location: ../modules/CorteCaja/corte_caja.php'); exit; 

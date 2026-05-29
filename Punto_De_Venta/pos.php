@@ -1,0 +1,1 @@
+<?php header('Location: ../modules/Punto_De_Venta/pos.php'); exit; 
