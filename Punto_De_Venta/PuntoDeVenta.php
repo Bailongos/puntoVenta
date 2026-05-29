@@ -105,12 +105,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fecha = $input['fecha'] ?? date('Y-m-d');
         $ventas = $conn->query("SELECT COUNT(*) AS total_ventas, COALESCE(SUM(total),0) AS total_ingresos FROM ventas WHERE DATE(created_at) = '$fecha' AND estatus = 'completada'")->fetch_assoc();
         $productos_vendidos = $conn->query("SELECT COALESCE(SUM(vd.cantidad),0) AS total FROM ventas_detalle vd JOIN ventas v ON vd.venta_id = v.id WHERE DATE(v.created_at) = '$fecha' AND v.estatus = 'completada'")->fetch_assoc();
+        $detalle = $conn->query("SELECT v.id, v.folio, v.total, v.created_at, u.usuario FROM ventas v LEFT JOIN usuarios u ON v.usuario_id = u.id WHERE DATE(v.created_at) = '$fecha' AND v.estatus = 'completada' ORDER BY v.created_at DESC");
+        $lista = [];
+        while ($d = $detalle->fetch_assoc()) {
+            $lista[] = $d;
+        }
         echo json_encode([
             'success' => true,
             'fecha' => $fecha,
             'total_ventas' => $ventas['total_ventas'],
             'total_ingresos' => number_format($ventas['total_ingresos'], 2),
-            'productos_vendidos' => $productos_vendidos['total']
+            'productos_vendidos' => $productos_vendidos['total'],
+            'ventas' => $lista
         ]);
         exit;
     }
@@ -383,11 +389,51 @@ require '../dashboard-header.php';
             })
             .then(function(r) { return r.json(); })
             .then(function(data) {
-                if (data.success) {
-                    showToast('Corte del ' + data.fecha + ': ' + data.total_ventas + ' ventas, $' + data.total_ingresos + ' ingresos, ' + data.productos_vendidos + ' productos vendidos', 'info');
-                } else {
+                if (!data.success) {
                     showToast('Error al obtener corte', 'error');
+                    return;
                 }
+                var modal = document.getElementById('corte-modal');
+                if (!modal) {
+                    modal = document.createElement('div');
+                    modal.id = 'corte-modal';
+                    modal.className = 'modal-overlay';
+                    modal.innerHTML =
+                        '<div class="modal-panel">' +
+                        '<div class="modal-heading">' +
+                        '<h2>Corte de Caja</h2>' +
+                        '<button class="modal-close" id="corte-cerrar">&times;</button>' +
+                        '</div>' +
+                        '<div id="corte-body"></div>' +
+                        '</div>';
+                    document.body.appendChild(modal);
+                    document.getElementById('corte-cerrar').addEventListener('click', function() {
+                        modal.classList.remove('abierto');
+                    });
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === modal) modal.classList.remove('abierto');
+                    });
+                }
+                var body = document.getElementById('corte-body');
+                var rows = '';
+                data.ventas.forEach(function(v) {
+                    rows += '<tr><td>' + v.folio + '</td><td>' + v.created_at + '</td><td>' + (v.usuario || '-') + '</td><td class="text-primary fw-bold">$' + parseFloat(v.total).toFixed(2) + '</td></tr>';
+                });
+                body.innerHTML =
+                    '<div class="corte-resumen">' +
+                    '<div><span>Fecha</span><strong>' + data.fecha + '</strong></div>' +
+                    '<div><span>Ventas</span><strong>' + data.total_ventas + '</strong></div>' +
+                    '<div><span>Ingresos</span><strong style="color:var(--primary);font-size:1.2em;">$' + data.total_ingresos + '</strong></div>' +
+                    '<div><span>Productos</span><strong>' + data.productos_vendidos + '</strong></div>' +
+                    '</div>' +
+                    '<div style="margin-top:16px;font-weight:600;font-size:14px;">Ventas del d&iacute;a</div>' +
+                    '<table class="data-table"><thead><tr><th>Folio</th><th>Hora</th><th>Atendi&oacute;</th><th>Total</th></tr></thead><tbody>' +
+                    (rows || '<tr><td colspan="4" class="empty-state">Sin ventas hoy</td></tr>') +
+                    '</tbody></table>';
+                modal.classList.add('abierto');
+            })
+            .catch(function(err) {
+                showToast('Error de conexi&oacute;n: ' + err.message, 'error');
             });
         });
     }
