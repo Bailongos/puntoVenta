@@ -107,6 +107,10 @@ require '../dashboard-header.php';
             <input type="text" name="folio" class="form-control" placeholder="Ej. VT-20260528" value="<?php echo htmlspecialchars($buscar_folio); ?>">
         </div>
         <button type="submit" class="btn btn-primary"><span class="material-icons">search</span> Aplicar Filtros</button>
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:flex-end;">
+            <a href="<?php echo $root_path; ?>ajax/exportar.php?tipo=excel&origen=reportes&desde=<?php echo urlencode($fecha_desde); ?>&hasta=<?php echo urlencode($fecha_hasta); ?>&folio=<?php echo urlencode($buscar_folio); ?>" class="btn btn-success btn-sm"><span class="material-icons">table_chart</span> Excel</a>
+            <a href="<?php echo $root_path; ?>ajax/exportar.php?tipo=pdf&origen=reportes&desde=<?php echo urlencode($fecha_desde); ?>&hasta=<?php echo urlencode($fecha_hasta); ?>&folio=<?php echo urlencode($buscar_folio); ?>" class="btn btn-info btn-sm" target="_blank"><span class="material-icons">picture_as_pdf</span> PDF</a>
+        </div>
     </form>
 </div>
 

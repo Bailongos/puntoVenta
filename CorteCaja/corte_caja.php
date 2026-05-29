@@ -87,6 +87,10 @@ require '../dashboard-header.php';
             <input type="date" name="fecha" class="form-control" value="<?php echo $fecha; ?>">
         </div>
         <button type="submit" class="btn btn-primary"><span class="material-icons">search</span> Consultar</button>
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:flex-end;">
+            <a href="<?php echo $root_path; ?>ajax/exportar.php?tipo=excel&origen=corte&fecha=<?php echo urlencode($fecha); ?>" class="btn btn-success btn-sm"><span class="material-icons">table_chart</span> Excel</a>
+            <a href="<?php echo $root_path; ?>ajax/exportar.php?tipo=pdf&origen=corte&fecha=<?php echo urlencode($fecha); ?>" class="btn btn-info btn-sm" target="_blank"><span class="material-icons">picture_as_pdf</span> PDF</a>
+        </div>
     </form>
 </div>
 
