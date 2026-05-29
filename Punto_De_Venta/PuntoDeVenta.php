@@ -192,6 +192,28 @@ require '../dashboard-header.php';
     </div>
 </div>
 
+<div class="modal-overlay" id="corte-modal">
+    <div class="modal-panel">
+        <div class="modal-heading">
+            <h2>Corte de Caja</h2>
+            <button class="modal-close" id="corte-cerrar">&times;</button>
+        </div>
+        <div id="corte-body">
+            <div class="corte-resumen" id="corte-resumen">
+                <div><span>Fecha</span><strong id="c-fecha">-</strong></div>
+                <div><span>Ventas</span><strong id="c-ventas">0</strong></div>
+                <div><span>Ingresos</span><strong id="c-ingresos" style="color:var(--primary);font-size:1.2em;">$0.00</strong></div>
+                <div><span>Productos</span><strong id="c-productos">0</strong></div>
+            </div>
+            <div id="corte-lista" style="margin-top:16px;font-weight:600;font-size:14px;">Ventas del d&iacute;a</div>
+            <table class="data-table">
+                <thead><tr><th>Folio</th><th>Hora</th><th>Atendi&oacute;</th><th>Total</th></tr></thead>
+                <tbody id="corte-tabla-body"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 <script>
 (function() {
     const ticketBody = document.getElementById('ticket-body');
@@ -381,6 +403,38 @@ require '../dashboard-header.php';
     }
 
     if (corteBtn) {
+        var corteModal = document.getElementById('corte-modal');
+        var corteCerrar = document.getElementById('corte-cerrar');
+
+        function abrirCorte(data) {
+            document.getElementById('c-fecha').textContent = data.fecha;
+            document.getElementById('c-ventas').textContent = data.total_ventas;
+            document.getElementById('c-ingresos').textContent = '$' + data.total_ingresos;
+            document.getElementById('c-productos').textContent = data.productos_vendidos;
+            var tbody = document.getElementById('corte-tabla-body');
+            tbody.innerHTML = '';
+            if (data.ventas.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="empty-state">Sin ventas hoy</td></tr>';
+            } else {
+                data.ventas.forEach(function(v) {
+                    var tr = document.createElement('tr');
+                    tr.innerHTML = '<td>' + v.folio + '</td><td>' + v.created_at + '</td><td>' + (v.usuario || '-') + '</td><td class="text-primary fw-bold">$' + parseFloat(v.total).toFixed(2) + '</td>';
+                    tbody.appendChild(tr);
+                });
+            }
+            corteModal.classList.add('abierto');
+        }
+
+        if (corteCerrar) {
+            corteCerrar.addEventListener('click', function() {
+                corteModal.classList.remove('abierto');
+            });
+        }
+        if (corteModal) {
+            corteModal.addEventListener('click', function(e) {
+                if (e.target === corteModal) corteModal.classList.remove('abierto');
+            });
+        }
         corteBtn.addEventListener('click', function() {
             fetch('', {
                 method: 'POST',
@@ -389,51 +443,14 @@ require '../dashboard-header.php';
             })
             .then(function(r) { return r.json(); })
             .then(function(data) {
-                if (!data.success) {
+                if (data.success) {
+                    abrirCorte(data);
+                } else {
                     showToast('Error al obtener corte', 'error');
-                    return;
                 }
-                var modal = document.getElementById('corte-modal');
-                if (!modal) {
-                    modal = document.createElement('div');
-                    modal.id = 'corte-modal';
-                    modal.className = 'modal-overlay';
-                    modal.innerHTML =
-                        '<div class="modal-panel">' +
-                        '<div class="modal-heading">' +
-                        '<h2>Corte de Caja</h2>' +
-                        '<button class="modal-close" id="corte-cerrar">&times;</button>' +
-                        '</div>' +
-                        '<div id="corte-body"></div>' +
-                        '</div>';
-                    document.body.appendChild(modal);
-                    document.getElementById('corte-cerrar').addEventListener('click', function() {
-                        modal.classList.remove('abierto');
-                    });
-                    modal.addEventListener('click', function(e) {
-                        if (e.target === modal) modal.classList.remove('abierto');
-                    });
-                }
-                var body = document.getElementById('corte-body');
-                var rows = '';
-                data.ventas.forEach(function(v) {
-                    rows += '<tr><td>' + v.folio + '</td><td>' + v.created_at + '</td><td>' + (v.usuario || '-') + '</td><td class="text-primary fw-bold">$' + parseFloat(v.total).toFixed(2) + '</td></tr>';
-                });
-                body.innerHTML =
-                    '<div class="corte-resumen">' +
-                    '<div><span>Fecha</span><strong>' + data.fecha + '</strong></div>' +
-                    '<div><span>Ventas</span><strong>' + data.total_ventas + '</strong></div>' +
-                    '<div><span>Ingresos</span><strong style="color:var(--primary);font-size:1.2em;">$' + data.total_ingresos + '</strong></div>' +
-                    '<div><span>Productos</span><strong>' + data.productos_vendidos + '</strong></div>' +
-                    '</div>' +
-                    '<div style="margin-top:16px;font-weight:600;font-size:14px;">Ventas del d&iacute;a</div>' +
-                    '<table class="data-table"><thead><tr><th>Folio</th><th>Hora</th><th>Atendi&oacute;</th><th>Total</th></tr></thead><tbody>' +
-                    (rows || '<tr><td colspan="4" class="empty-state">Sin ventas hoy</td></tr>') +
-                    '</tbody></table>';
-                modal.classList.add('abierto');
             })
             .catch(function(err) {
-                showToast('Error de conexi&oacute;n: ' + err.message, 'error');
+                showToast('Error de conexion: ' + err.message, 'error');
             });
         });
     }
