@@ -43,15 +43,7 @@ $total_articulos = $conn->query("SELECT COALESCE(SUM(vd.cantidad),0) AS t FROM v
 
 $total_movimientos = $conn->query("SELECT COUNT(*) AS c FROM inventario_movimientos m JOIN articulos a ON m.producto_id = a.id WHERE DATE(m.fecha_movimiento) >= '$fecha_desde' AND DATE(m.fecha_movimiento) <= '$fecha_hasta'")->fetch_assoc()['c'];
 
-// Detalle de venta modal
-$detalle_venta = null;
-if (isset($_GET['ver_ticket'])) {
-    $id_venta = (int)$_GET['ver_ticket'];
-    $detalle_venta = $conn->query("SELECT v.*, u.usuario FROM ventas v LEFT JOIN usuarios u ON v.usuario_id = u.id WHERE v.id = $id_venta")->fetch_assoc();
-    if ($detalle_venta) {
-        $detalle_items = $conn->query("SELECT vd.*, a.descripcion, a.codigo_barras FROM ventas_detalle vd JOIN articulos a ON vd.producto_id = a.id WHERE vd.venta_id = $id_venta");
-    }
-}
+
 
 $modulo_activo = 'reportes';
 $page_title = 'Reportes';
@@ -144,53 +136,12 @@ require '../dashboard-header.php';
                 <td><?php echo htmlspecialchars($v['usuario'] ?? '-'); ?></td>
                 <td class="text-primary fw-bold">$<?php echo number_format($v['total'], 2); ?></td>
                 <td><span class="badge <?php echo $v['estatus'] === 'completada' ? 'badge-active' : 'badge-inactive'; ?>"><?php echo ucfirst($v['estatus']); ?></span></td>
-                <td><a href="?ver_ticket=<?php echo $v['id']; ?>&desde=<?php echo urlencode($fecha_desde); ?>&hasta=<?php echo urlencode($fecha_hasta); ?>&folio=<?php echo urlencode($buscar_folio); ?>" class="btn btn-primary btn-sm"><span class="material-icons" style="font-size:16px;">print</span> Ver Ticket</a></td>
+                <td><button class="btn btn-primary btn-sm ver-ticket" data-id="<?php echo $v['id']; ?>"><span class="material-icons" style="font-size:16px;">print</span> Ver Ticket</button></td>
             </tr>
             <?php endwhile; ?>
             <?php endif; ?>
         </tbody>
     </table>
 </div>
-
-<?php if ($detalle_venta): ?>
-<div class="module-card">
-    <h3>Ticket: <?php echo htmlspecialchars($detalle_venta['folio']); ?></h3>
-    <div class="flex-row" style="margin-bottom:12px;">
-        <span><strong>Fecha:</strong> <?php echo htmlspecialchars($detalle_venta['created_at']); ?></span>
-        <span><strong>Atendió:</strong> <?php echo htmlspecialchars($detalle_venta['usuario'] ?? 'N/A'); ?></span>
-        <span><strong>Total:</strong> <strong class="text-primary">$<?php echo number_format($detalle_venta['total'], 2); ?></strong></span>
-    </div>
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>Código</th>
-                <th>Descripción</th>
-                <th>Cantidad</th>
-                <th>Precio Unit.</th>
-                <th>Subtotal</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while ($item = $detalle_items->fetch_assoc()): ?>
-            <tr>
-                <td><?php echo htmlspecialchars($item['codigo_barras']); ?></td>
-                <td><?php echo htmlspecialchars($item['descripcion']); ?></td>
-                <td><?php echo $item['cantidad']; ?></td>
-                <td>$<?php echo number_format($item['precio_unitario'], 2); ?></td>
-                <td class="fw-bold">$<?php echo number_format($item['subtotal'], 2); ?></td>
-            </tr>
-            <?php endwhile; ?>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="4" class="text-right fw-bold">Total:</td>
-                <td class="fw-bold text-primary">$<?php echo number_format($detalle_venta['total'], 2); ?></td>
-            </tr>
-        </tfoot>
-    </table>
-    <br>
-    <a href="?" class="btn btn-secondary"><span class="material-icons">close</span> Cerrar Ticket</a>
-</div>
-<?php endif; ?>
 
 <?php require '../dashboard-footer.php'; ?>
