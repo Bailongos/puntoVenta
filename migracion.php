@@ -190,13 +190,91 @@ if ($check_admin == 0) {
   $mensajes[] = '✓ Usuario admin creado (usuario: admin / contraseña: admin)';
 }
 
+// ── 5. Crear tabla clientes ──
+$conn->query("CREATE TABLE IF NOT EXISTS clientes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  codigo_cliente VARCHAR(20) NOT NULL UNIQUE,
+  nombre VARCHAR(255) NOT NULL,
+  telefono VARCHAR(20) DEFAULT NULL,
+  email VARCHAR(100) DEFAULT NULL,
+  direccion TEXT DEFAULT NULL,
+  estatus ENUM('activo','inactivo') DEFAULT 'activo',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+$mensajes[] = '✓ Tabla clientes lista';
+
+// ── 6. Crear tabla articulos ──
+$conn->query("CREATE TABLE IF NOT EXISTS articulos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  codigo_barras VARCHAR(50) NOT NULL UNIQUE,
+  descripcion VARCHAR(255) NOT NULL,
+  precio_venta DECIMAL(10,2) DEFAULT 0,
+  precio_compra DECIMAL(10,2) DEFAULT 0,
+  stock_actual INT DEFAULT 0,
+  imagen VARCHAR(255) DEFAULT NULL,
+  estatus ENUM('alta','baja') DEFAULT 'alta',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+$mensajes[] = '✓ Tabla articulos lista';
+
+// ── 7. Crear tabla ventas ──
+$conn->query("CREATE TABLE IF NOT EXISTS ventas (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  folio VARCHAR(20) NOT NULL UNIQUE,
+  total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  forma_pago VARCHAR(50) DEFAULT 'efectivo',
+  cliente_id INT DEFAULT NULL,
+  usuario_id INT DEFAULT NULL,
+  estatus ENUM('completada','cancelada') DEFAULT 'completada',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (cliente_id) REFERENCES clientes(id),
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+$mensajes[] = '✓ Tabla ventas lista';
+
+// ── 8. Crear tabla ventas_detalle ──
+$conn->query("CREATE TABLE IF NOT EXISTS ventas_detalle (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  venta_id INT NOT NULL,
+  producto_id INT NOT NULL,
+  cantidad INT NOT NULL,
+  precio_unitario DECIMAL(10,2) NOT NULL,
+  subtotal DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (venta_id) REFERENCES ventas(id) ON DELETE CASCADE,
+  FOREIGN KEY (producto_id) REFERENCES articulos(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+$mensajes[] = '✓ Tabla ventas_detalle lista';
+
+// ── 9. Crear tabla inventario_movimientos ──
+$conn->query("CREATE TABLE IF NOT EXISTS inventario_movimientos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  producto_id INT NOT NULL,
+  tipo_movimiento ENUM('entrada','salida') NOT NULL,
+  concepto VARCHAR(100) DEFAULT NULL,
+  cantidad INT NOT NULL,
+  stock_anterior INT NOT NULL,
+  stock_posterior INT NOT NULL,
+  usuario_id INT DEFAULT NULL,
+  observaciones TEXT DEFAULT NULL,
+  fecha_movimiento DATETIME DEFAULT CURRENT_TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (producto_id) REFERENCES articulos(id),
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+$mensajes[] = '✓ Tabla inventario_movimientos lista';
+
 // ── Verificar ──
 $check_roles = $conn->query("SELECT COUNT(*) AS c FROM roles")->fetch_assoc()['c'];
 $check_permisos = $conn->query("SELECT COUNT(*) AS c FROM permisos")->fetch_assoc()['c'];
 $check_usuarios = $conn->query("SELECT COUNT(*) AS c FROM usuarios")->fetch_assoc()['c'];
 $check_admins = $conn->query("SELECT COUNT(*) AS c FROM usuarios WHERE usuario = 'admin'")->fetch_assoc()['c'];
+$check_clientes = $conn->query("SELECT COUNT(*) AS c FROM clientes")->fetch_assoc()['c'];
+$check_articulos = $conn->query("SELECT COUNT(*) AS c FROM articulos")->fetch_assoc()['c'];
 
-$mensajes[] = "<br><strong>Resumen:</strong> $check_roles roles · $check_permisos permisos · $check_usuarios usuarios ($check_admins admin)";
+$mensajes[] = "<br><strong>Resumen:</strong> $check_roles roles · $check_permisos permisos · $check_usuarios usuarios ($check_admins admin) · $check_clientes clientes · $check_articulos artículos";
+
 ?><!DOCTYPE html>
 <html lang="es">
 <head>
